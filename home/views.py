@@ -8,26 +8,30 @@ import requests
 # Create your views here.
 
 def index(request):
-    profiles = Profile.objects.all()
+    if request.user.is_authenticated:
+        profiles = Profile.objects.all()
 
-    # List to store marker coordinates for location_one and location_two
-    markers = []
+        # List to store marker coordinates for location_one and location_two
+        markers = []
 
-    # Iterate through profiles and geocode location_one and location_two
-    for profile in profiles:
-        # Geocode location_one
-        location_one = profile.location_one
-        coordinates_one = geocode_location(location_one)
-        if coordinates_one:
-            markers.append({'name': profile.name_one, 'coordinates': coordinates_one})
+        # Iterate through profiles and geocode location_one and location_two
+        for profile in profiles:
+            # Geocode location_one
+            location_one = profile.location_one
+            coordinates_one = geocode_location(location_one)
+            if coordinates_one:
+                markers.append({'name': profile.name_one, 'coordinates': coordinates_one})
 
-        # Geocode location_two
-        location_two = profile.location_two
-        coordinates_two = geocode_location(location_two)
-        if coordinates_two:
-            markers.append({'name': profile.name_two, 'coordinates': coordinates_two})
+            # Geocode location_two
+            location_two = profile.location_two
+            coordinates_two = geocode_location(location_two)
+            if coordinates_two:
+                markers.append({'name': profile.name_two, 'coordinates': coordinates_two})
 
-    return render(request, 'home/index.html', {'markers': markers})
+        return render(request, 'home/index.html', {'markers': markers})
+    else:
+        return render(request, 'home/landing.html')
+    
 
 def geocode_location(location):
     # Use a geocoding service to obtain coordinates for the location
@@ -124,3 +128,11 @@ def delete_profile(request):
         return redirect('home')
     else:
         return render(request, 'home/delete_profile_confirmation.html')
+    
+def landing(request):
+    """ A view to return the about page """
+    if request.user.is_authenticated:
+        return redirect('profile')
+    else:
+        return render(request, 'home/landing.html')
+    
