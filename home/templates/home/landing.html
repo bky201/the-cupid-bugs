@@ -16,19 +16,6 @@
 
 {% block content %}
 
-<ul>
-    {% for profile in profiles %}
-    <li>
-        <strong>User:</strong> {{ profile.user.username }}<br>
-        <strong>Location One:</strong> {{ profile.location_one }}<br>
-        <strong>Location Two:</strong> {{ profile.location_two }}<br>
-        <strong>Status:</strong> {{ profile.status }}<br>
-        <hr>
-    </li>
-    {% endfor %}
-</ul>
-
-
 <div class="container" style="height: 60vh;">
     <div class="row align-items-center" style="height: 60vh;">
         <img src="{% static '/images/landing-page.png' %}" alt="time" class="img-fluid mx-auto d-block " loading="lazy"

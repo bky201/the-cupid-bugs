@@ -23,10 +23,10 @@
     <label for="location_two">Partner's Location:</label>
     <input type="text" class="form-control" id="location_two" name="location_two">
   </div>
-  <div class="form-group">
+  <!-- <div class="form-group">
     <label for="datetime_field">Date of Meeting:</label>
     <input type="datetime-local" class="form-control" id="datetime_field" name="datetime_field">
-  </div>
+  </div> -->
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
@@ -36,43 +36,6 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="{% static 'home/js/script.js' %}"></script>
-<script>
-  function geocodeAddress(location, callback) {
-    var geocoder = new google.maps.Geocoder();
-    geocoder.geocode({ 'address': location }, function (results, status) {
-      if (status === 'OK') {
-        var latlng = {
-          lat: results[0].geometry.location.lat(),
-          lng: results[0].geometry.location.lng()
-        };
-        callback(latlng);
-      } else {
-        console.error('Geocode was not successful for the following reason: ' + status);
-      }
-    });
-  }
+<!-- <script src="{% static 'home/js/script.js' %}"></script> -->
 
-  document.getElementById('locationsForm').addEventListener('submit', function (event) {
-    event.preventDefault(); // Prevent the form from submitting normally
-
-    var locationOne = document.getElementById('location_one').value;
-    var locationTwo = document.getElementById('location_two').value;
-
-    geocodeAddress(locationOne, function (latlngOne) {
-      geocodeAddress(locationTwo, function (latlngTwo) {
-        // Now you have the latitude and longitude coordinates for both locations
-        console.log('Location One:', latlngOne);
-        console.log('Location Two:', latlngTwo);
-
-        // Use these coordinates to draw a line on the map
-        var latlngs = [latlngOne, latlngTwo];
-        var polyline = L.polyline(latlngs, { color: 'red' }).addTo(map);
-      });
-    });
-  });
-
-
-</script>
 {% endblock %}

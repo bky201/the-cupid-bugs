@@ -14,6 +14,9 @@
     {% block corecss %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <link type="text/css" href="{% static 'css/style.css' %}" rel="stylesheet">
 
     {% endblock %}
@@ -31,6 +34,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
     {% endblock %}
 
     {% block extra_js %}
@@ -50,7 +56,7 @@
 
 
     <!-- First modal for welcome -->
-    <div class="modal fade" id="welcomeModal" tabindex="-1" role="dialog" aria-labelledby="welcomeModalLabel"
+    <!-- <div class="modal fade" id="welcomeModal" tabindex="-1" role="dialog" aria-labelledby="welcomeModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -59,10 +65,10 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Second modal for full screen -->
-    <div class="modal fade" id="secondModal" tabindex="-1" role="dialog" aria-labelledby="secondModalLabel"
+    <!-- <div class="modal fade" id="secondModal" tabindex="-1" role="dialog" aria-labelledby="secondModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered modal-fullscreen" role="document">
             <div class="modal-content">
@@ -72,7 +78,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <header class="container-fluid fixed-top">
         <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
@@ -173,6 +179,32 @@
     </script>
     <script src="https://kit.fontawesome.com/049d55f482.js" crossorigin="anonymous"></script>
 
+    <script>
+        var map = L.map('map').setView([0, 0], 2); // Set initial coordinates and zoom level
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        document.getElementById('locationsForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+
+            var locationOne = document.getElementById('location_one').value;
+            var locationTwo = document.getElementById('location_two').value;
+
+            $.get(location.protocol + '//nominatim.openstreetmap.org/search?format=json&q=' + locationOne, function (data) {
+                var lat1 = data[0].lat;
+                var lon1 = data[0].lon;
+                L.marker([lat1, lon1]).addTo(map);
+            });
+
+            $.get(location.protocol + '//nominatim.openstreetmap.org/search?format=json&q=' + locationTwo, function (data) {
+                var lat2 = data[0].lat;
+                var lon2 = data[0].lon;
+                L.marker([lat2, lon2]).addTo(map);
+            });
+        });
+    </script>
 </body>
 
 </html>
