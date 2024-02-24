@@ -10,6 +10,8 @@ import requests
 def index(request):
     if request.user.is_authenticated:
         profiles = Profile.objects.all()
+        profile = Profile.objects.get(user=request.user)
+        
 
         # List to store marker coordinates for location_one and location_two
         markers = []
@@ -27,8 +29,9 @@ def index(request):
             coordinates_two = geocode_location(location_two)
             if coordinates_two:
                 markers.append({'name': profile.name_two, 'coordinates': coordinates_two})
+        context = {'profile': profile, 'markers': markers}
 
-        return render(request, 'home/index.html', {'markers': markers})
+        return render(request, 'home/index.html', context)
     else:
         return render(request, 'home/landing.html')
     

@@ -1,6 +1,8 @@
 from django import forms
 from .models import Profile
 from django.forms.fields import DateTimeField
+import os
+import requests
 
 
 # class ProfileForm(forms.ModelForm):
