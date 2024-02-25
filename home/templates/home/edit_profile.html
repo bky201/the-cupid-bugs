@@ -2,55 +2,126 @@
 {% load static %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'home/css/profile_view.css' %}">
+<link rel="stylesheet" href="{% static 'home/css/profile_view.css' %}">
 {% endblock %}
 
 
 {% block content %}
-  <div class="container profile-container">
-    <div class="card">
-      <div class="card-header bg-danger text-white">
-        <h1 class="mb-0">Modify Profile</h1>
-      </div>
-      <div class="card-body">
-        <form method="post">
-          {% csrf_token %}
+<div class="container profile-container">
+  <div class="card">
+    <div class="card-header bg-danger text-white">
+      <h1 class="mb-0">Modify Profile</h1>
+    </div>
+    <div class="card-body">
+      <form method="post" id="profile-form">
+        {% csrf_token %}
 
-          <div class="row">
-            <div class="col-md-6">
-              <dl class="row">
-                <dt class="col-sm-4"><strong>{{ form.name_one.label_tag }}</strong></dt>
-                <dd class="col-sm-8">{{ form.name_one }}</dd>
+        <div class="row">
+          <div class="col-md-6">
+            <dl class="row">
+              <dt class="col-sm-4"><strong>{{ form.name_one.label_tag }}</strong></dt>
+              <dd class="col-sm-8">{{ form.name_one }}</dd>
 
-                <dt class="col-sm-4"><strong>{{ form.name_two.label_tag }}</strong></dt>
-                <dd class="col-sm-8">{{ form.name_two }}</dd>
-              </dl>
-            </div>
-            <div class="col-md-6">
-              <dl class="row">
-                <dt class="col-sm-4"><strong>{{ form.location_one.label_tag }}</strong></dt>
-                <dd class="col-sm-8">{{ form.location_one }}</dd>
-
-                <dt class="col-sm-4"><strong>{{ form.location_two.label_tag }}</strong></dt>
-                <dd class="col-sm-8">{{ form.location_two }}</dd>
-              </dl>
-            </div>
+              <dt class="col-sm-4"><strong>{{ form.name_two.label_tag }}</strong></dt>
+              <dd class="col-sm-8">{{ form.name_two }}</dd>
+            </dl>
           </div>
-
-          <div class="form-group mt-3">
-            <strong>{{ form.status.label_tag }}</strong>
-            {{ form.status }}
+          <div class="col-md-6">
+            <dl class="row">
+              <dt class="col-sm-4"><strong>{{ form.location_one.label_tag }}</strong></dt>
+              <dd class="col-sm-8">{{ form.location_one }}</dd>
+              <input type="hidden" name="location_one_latitude" id="id_location_one_latitude" value="">
+              <input type="hidden" name="location_one_longitude" id="id_location_one_longitude" value="">
+              <dt class="col-sm-4"><strong>{{ form.location_two.label_tag }}</strong></dt>
+              <dd class="col-sm-8">{{ form.location_two }}</dd>
+              <input type="hidden" name="location_two_latitude" id="id_location_two_latitude" value="">
+              <input type="hidden" name="location_two_longitude" id="id_location_two_longitude" value="">
+            </dl>
           </div>
+        </div>
 
-          <div class="form-group">
-            <strong>{{ form.datetime_field.label_tag }}</strong>
-            {{ form.datetime_field }}
-          </div>
+        <div class="form-group mt-3">
+          <strong>{{ form.status.label_tag }}</strong>
+          {{ form.status }}
+        </div>
 
-          <button type="submit" class="btn btn-primary">Save Changes</button>
-          <a href="{% url 'profile_view' %}" class="btn btn-secondary">Cancel</a>
-        </form>
-      </div>
+        <div class="form-group">
+          <strong>{{ form.datetime_field.label_tag }}</strong>
+          {{ form.datetime_field }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="{% url 'profile_view' %}" class="btn btn-secondary">Cancel</a>
+      </form>
     </div>
   </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var form = document.getElementById('profile-form');
+
+    // Function to convert location to coordinates and update hidden input fields
+    function updateCoordinates(locationField, latField, lonField) {
+      var location = locationField.value;
+      // Fetch coordinates for the location
+      $.get(location.protocol + '//nominatim.openstreetmap.org/search?format=json&q=' + location, function (data) {
+        var lat = data[0].lat;
+        var lon = data[0].lon;
+        // Update the latitude and longitude fields
+        $(latField).val(lat);
+        $(lonField).val(lon);
+      }).fail(function () {
+        // Handle error if the AJAX request fails
+        console.error('Failed to retrieve coordinates.');
+      });
+    }
+
+    // Update coordinates when location fields change
+    $('#id_location_one').on('change', function () {
+      updateCoordinates(this, '#id_location_one_latitude', '#id_location_one_longitude');
+    });
+
+    $('#id_location_two').on('change', function () {
+      updateCoordinates(this, '#id_location_two_latitude', '#id_location_two_longitude');
+    });
+
+    // Prevent form submission and convert locations to coordinates when submitted
+    form.addEventListener('submit', function (event) {
+      event.preventDefault(); // Prevent the form from submitting normally
+      // Get the values of location_one and location_two
+      var locationOne = form.elements['location_one'].value;
+      var locationTwo = form.elements['location_two'].value;
+      // Call a function to convert locations to coordinates
+      convertLocationToCoordinates(locationOne, locationTwo);
+    });
+
+    // Function to submit the form after coordinates are updated
+    function convertLocationToCoordinates(locationOne, locationTwo) {
+      // Fetch coordinates for locationOne
+      $.get(location.protocol + '//nominatim.openstreetmap.org/search?format=json&q=' + locationOne, function (data) {
+        var lat1 = data[0].lat;
+        var lon1 = data[0].lon;
+        // Set the retrieved coordinates in the hidden input fields for location_one
+        $('#id_location_one_latitude').val(lat1);
+        $('#id_location_one_longitude').val(lon1);
+        // Fetch coordinates for locationTwo
+        $.get(location.protocol + '//nominatim.openstreetmap.org/search?format=json&q=' + locationTwo, function (data) {
+          var lat2 = data[0].lat;
+          var lon2 = data[0].lon;
+          // Set the retrieved coordinates in the hidden input fields for location_two
+          $('#id_location_two_latitude').val(lat2);
+          $('#id_location_two_longitude').val(lon2);
+          // Submit the form
+          form.submit();
+        });
+      }).fail(function () {
+        // Handle error if the AJAX request fails
+        console.error('Failed to retrieve coordinates.');
+      });
+    }
+  });
+</script>
 {% endblock %}

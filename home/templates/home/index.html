@@ -24,7 +24,9 @@
         <div class="col-md-6">
           <dl class="row">
             <dt class="col-sm-4"><strong>Location One:</strong></dt>
-            <dd class="col-sm-8" id="location_one">{{ profile.location_one }}</dd>
+            <dd class="col-sm-8" id="location_one">{{ profile.location_one }} [{{ profile.location_one_latitude }},  {{ profile.location_one_longitude }}] </dd>
+            <!-- <dd class="col-sm-8">{{ profile.location_one_latitude }}</dd>
+            <dd class="col-sm-8">{{ profile.location_one_longitude }} </dd> -->
 
             <dt class="col-sm-4"><strong>Location Two:</strong></dt>
             <dd class="col-sm-8" id="location_two">{{ profile.location_two }}</dd>
