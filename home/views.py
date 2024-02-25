@@ -10,20 +10,11 @@ import requests
 def index(request):
     if request.user.is_authenticated:
         profile = Profile.objects.get(user=request.user)
-        # profile = Profile.objects.get(user=request.user)
-        # Extract latitude and longitude values from the profile object
-        # location_one_latitude = profile.location_one_latitude
-        # location_one_longitude = profile.location_one_longitude
-        # location_two_latitude = profile.location_two_latitude
-        # location_two_longitude = profile.location_two_longitude
+        profiles = Profile.objects.all()
 
         context = {
             'profile': profile, 
-            # 'profiles': profiles,
-            # 'location_one_latitude': location_one_latitude,
-            # 'location_one_longitude': location_one_longitude,
-            # 'location_two_latitude': location_two_latitude,
-            # 'location_two_longitude': location_two_longitude,
+            'profiles': profiles,
             }
 
         return render(request, 'home/index.html', context)

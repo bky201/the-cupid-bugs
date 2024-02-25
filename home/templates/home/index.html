@@ -9,31 +9,59 @@
     height: 500px;
     margin-top: 10px;
   }
+
+  #countdownTimer {
+    width: 100%;
+    height: 30px;
+    font-size: xx-large;
+    background-color: aquamarine;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 </style>
 {% endblock %}
 
 {% block content %}
-<div id="map"></div>
-<div id="countdownTimer"></div>
+
+<div class="container p">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-9">
+          <h2>Couple Network</h2>
+          <div id="map"></div>
+        </div>
+        <div class="col-md-3">
+          <h2>Countdown</h2>
+          <div id="countdownTimer" style="height: 20vh;"></div>
+          <div class="row align-items-center" style="height: 60vh;">
+            <img src="{% static '/images/time.svg' %}" alt="time" class="img-fluid mx-auto d-block " loading="lazy"
+              style="height: 60vh;" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% if profile %}
-<div class="container profile-containe" id="locations">
+<div class="container profile-container" id="locations">
   <div class="card">
     <div class="card-body">
       <div class="row">
         <div class="col-md-6">
           <dl class="row">
             <dt class="col-sm-4"><strong>Location One:</strong></dt>
-            <dd class="col-sm-8" id="location_one">{{ profile.location_one }} [{{ profile.location_one_latitude }},  {{ profile.location_one_longitude }}] </dd>
-            <!-- <dd class="col-sm-8">{{ profile.location_one_latitude }}</dd>
-            <dd class="col-sm-8">{{ profile.location_one_longitude }} </dd> -->
+            <dd class="col-sm-8" id="location_one">{{ profile.location_one }}</dd>
 
             <dt class="col-sm-4"><strong>Location Two:</strong></dt>
             <dd class="col-sm-8" id="location_two">{{ profile.location_two }}</dd>
           </dl>
         </div>
       </div>
-      <p><strong>When you guys will meet:</strong> {{ profile.datetime_field }}</p>
+      <p><strong>When you guys will meet:</strong><span id="countDown">{{ profile.datetime_field }}</span></p>
     </div>
   </div>
   <div class="mt-4">
@@ -49,6 +77,27 @@
 </div>
 {% endif %}
 
+{% for prof in profiles %}
+<div class="container profile-container latitude" style="display: none;">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <dl class="row">
+            <dt class="col-sm-4"><strong>Location One:</strong></dt>
+            <dd class="col-sm-8" id="location_one_latitude">{{ prof.location_one_latitude }}</dd>
+            <dd class="col-sm-8" id="location_one_longitude">{{ prof.location_one_longitude }}</dd>
+
+            <dt class="col-sm-4"><strong>Location Two:</strong></dt>
+            <dd class="col-sm-8" id="location_two_latitude">{{ prof.location_two_latitude }}</dd>
+            <dd class="col-sm-8" id="location_two_longitude">{{ prof.location_two_longitude }}</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
 
 {% endblock %}
 
@@ -62,10 +111,8 @@
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    var locations = document.getElementById('locations');
-    if (locations) {
-      // locations.addEventListener('submit', function (event) {
-      // event.preventDefault(); // Prevent the form from submitting normally
+    var mylocation = document.getElementById('locations');
+    if (mylocation) {
 
       var locationOne = document.getElementById('location_one').innerHTML;
       var locationTwo = document.getElementById('location_two').innerHTML;
@@ -90,9 +137,77 @@
           map.fitBounds(bounds);
         });
       });
-      // });
     }
-  });
 
+    // Loop over each profile container
+    document.querySelectorAll('.latitude').forEach(function (container) {
+      // Find location elements within the container
+      var locationOneLatElement = container.querySelector('#location_one_latitude');
+      var locationOneLonElement = container.querySelector('#location_one_longitude');
+      var locationTwoLatElement = container.querySelector('#location_two_latitude');
+      var locationTwoLonElement = container.querySelector('#location_two_longitude');
+
+      // Check if all elements are found
+      if (locationOneLatElement && locationOneLonElement && locationTwoLatElement && locationTwoLonElement) {
+        // Extract latitude and longitude values
+        var locationOneLat = locationOneLatElement.innerText;
+        var locationOneLon = locationOneLonElement.innerText;
+        var locationTwoLat = locationTwoLatElement.innerText;
+        var locationTwoLon = locationTwoLonElement.innerText;
+
+        // Convert latitude and longitude values to floats
+        var locationOneLatLng = [parseFloat(locationOneLat), parseFloat(locationOneLon)];
+        var locationTwoLatLng = [parseFloat(locationTwoLat), parseFloat(locationTwoLon)];
+
+        // Add markers to the map
+        var marker1 = L.marker(locationOneLatLng).addTo(map)
+          .bindPopup('Location One: ' + locationOneLatLng).openPopup();
+        var marker2 = L.marker(locationTwoLatLng).addTo(map)
+          .bindPopup('Location Two: ' + locationTwoLatLng).openPopup();
+
+        // Create a Polyline from locationOne to locationTwo
+        var polyline = L.polyline([[locationOneLat, locationOneLon], [locationTwoLat, locationTwoLon]], { color: 'blue' }).addTo(map);
+      } else {
+        console.error('One or more location elements not found in the container:', container);
+      }
+    });
+
+    // Get the scheduled date from the HTML element
+    var scheduledDateStr = document.getElementById('countDown').innerHTML.trim(); // Remove leading/trailing whitespaces
+
+    // Preprocess the date string to remove the period after the month abbreviation and convert "p.m." to "PM"
+    scheduledDateStr = scheduledDateStr.replace('.', '').replace('p.m.', 'PM');
+
+    // Parse the scheduled date string into a Date object
+    var scheduledDate = new Date(scheduledDateStr);
+
+    // Function to update the countdown
+    function updateCountdown() {
+      var now = new Date();
+      var difference = scheduledDate - now;
+
+      // Check if the scheduled date has passed
+      if (difference <= 0) {
+        clearInterval(timer);
+        document.getElementById('countdownTimer').innerHTML = 'Scheduled date has passed';
+        return;
+      }
+
+      var days = Math.floor(difference / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+      var countdown = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+      document.getElementById('countdownTimer').innerHTML = countdown;
+    }
+
+    // Initial call to update countdown
+    updateCountdown();
+
+    // Update countdown every second
+    var timer = setInterval(updateCountdown, 1000);
+
+  });
 </script>
 {% endblock %}
