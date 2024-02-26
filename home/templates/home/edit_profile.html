@@ -63,23 +63,18 @@
   document.addEventListener('DOMContentLoaded', function () {
     var form = document.getElementById('profile-form');
 
-    // Function to convert location to coordinates and update hidden input fields
     function updateCoordinates(locationField, latField, lonField) {
       var location = locationField.value;
-      // Fetch coordinates for the location
       $.get(location.protocol + '//nominatim.openstreetmap.org/search?format=json&q=' + location, function (data) {
         var lat = data[0].lat;
         var lon = data[0].lon;
-        // Update the latitude and longitude fields
         $(latField).val(lat);
         $(lonField).val(lon);
       }).fail(function () {
-        // Handle error if the AJAX request fails
         console.error('Failed to retrieve coordinates.');
       });
     }
 
-    // Update coordinates when location fields change
     $('#id_location_one').on('change', function () {
       updateCoordinates(this, '#id_location_one_latitude', '#id_location_one_longitude');
     });
@@ -88,37 +83,27 @@
       updateCoordinates(this, '#id_location_two_latitude', '#id_location_two_longitude');
     });
 
-    // Prevent form submission and convert locations to coordinates when submitted
     form.addEventListener('submit', function (event) {
-      event.preventDefault(); // Prevent the form from submitting normally
-      // Get the values of location_one and location_two
+      event.preventDefault(); 
       var locationOne = form.elements['location_one'].value;
       var locationTwo = form.elements['location_two'].value;
-      // Call a function to convert locations to coordinates
       convertLocationToCoordinates(locationOne, locationTwo);
     });
 
-    // Function to submit the form after coordinates are updated
     function convertLocationToCoordinates(locationOne, locationTwo) {
-      // Fetch coordinates for locationOne
       $.get(location.protocol + '//nominatim.openstreetmap.org/search?format=json&q=' + locationOne, function (data) {
         var lat1 = data[0].lat;
         var lon1 = data[0].lon;
-        // Set the retrieved coordinates in the hidden input fields for location_one
         $('#id_location_one_latitude').val(lat1);
         $('#id_location_one_longitude').val(lon1);
-        // Fetch coordinates for locationTwo
         $.get(location.protocol + '//nominatim.openstreetmap.org/search?format=json&q=' + locationTwo, function (data) {
           var lat2 = data[0].lat;
           var lon2 = data[0].lon;
-          // Set the retrieved coordinates in the hidden input fields for location_two
           $('#id_location_two_latitude').val(lat2);
           $('#id_location_two_longitude').val(lon2);
-          // Submit the form
           form.submit();
         });
       }).fail(function () {
-        // Handle error if the AJAX request fails
         console.error('Failed to retrieve coordinates.');
       });
     }

@@ -3,9 +3,7 @@ from .forms import ProfileForm
 from .models import Profile
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-import requests
 
-# Create your views here.
 
 def index(request):
     if request.user.is_authenticated:
@@ -44,18 +42,9 @@ def profile_view(request):
     if request.user.is_authenticated:
         profile = Profile.objects.get(user=request.user)
         
-        # Extract latitude and longitude values from the profile object
-        # location_one_latitude = profile.location_one_latitude
-        # location_one_longitude = profile.location_one_longitude
-        # location_two_latitude = profile.location_two_latitude
-        # location_two_longitude = profile.location_two_longitude
         
         context = {
             'profile': profile,
-            # 'location_one_latitude': location_one_latitude,
-            # 'location_one_longitude': location_one_longitude,
-            # 'location_two_latitude': location_two_latitude,
-            # 'location_two_longitude': location_two_longitude,
         }
         return render(request, 'home/profile_view.html', context)
     else:
@@ -66,7 +55,7 @@ def profile_view(request):
 @login_required
 def profile(request):
     if Profile.objects.filter(user=request.user).exists():
-        return redirect('profile_view')
+        return redirect('home')
 
     if request.method == 'POST':
         form = ProfileForm(request.POST)
@@ -74,7 +63,7 @@ def profile(request):
             profile = form.save(commit=False)
             profile.user = request.user
             profile.save()
-            return redirect('profile_view')
+            return redirect('home')
     else:
         form = ProfileForm()
 

@@ -13,13 +13,11 @@ class ProfileForm(forms.ModelForm):
     def save(self, commit=True):
         instance = super(ProfileForm, self).save(commit=False)
 
-        # Extract latitude and longitude values from form data
         lat1 = self.cleaned_data.get('location_one_latitude')
         lon1 = self.cleaned_data.get('location_one_longitude')
         lat2 = self.cleaned_data.get('location_two_latitude')
         lon2 = self.cleaned_data.get('location_two_longitude')
 
-        # Save latitude and longitude values to the model instance
         instance.location_one_latitude = lat1
         instance.location_one_longitude = lon1
         instance.location_two_latitude = lat2

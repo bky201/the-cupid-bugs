@@ -46,39 +46,39 @@
     <title>Miles and Smiles {% block extra_title %}{% endblock %}</title>
 </head>
 
-
-
-
-
 <body class="d-flex flex-column min-vh-100">
-
-
-
-
-    <!-- First modal for welcome -->
-    <!-- <div class="modal fade" id="welcomeModal" tabindex="-1" role="dialog" aria-labelledby="welcomeModalLabel"
+    <div class="modal fade" id="welcomeModal" tabindex="-1" role="dialog" aria-labelledby="welcomeModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <div class="modal-body">
                     <img src="{% static '/images/angry-boss-2.png' %}" class="img-fluid" alt="Welcome Image">
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 
-    <!-- Second modal for full screen -->
-    <!-- <div class="modal fade" id="secondModal" tabindex="-1" role="dialog" aria-labelledby="secondModalLabel"
+    <div class="modal fade" id="secondModal" tabindex="-1" role="dialog" aria-labelledby="secondModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered modal-fullscreen" role="document">
             <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <div class="modal-body">
                     <img src="{% static '/images/modal-2.png' %}" class="img-fluid" alt="Full Screen Image">
                     <button type="button" class="btn btn-primary" id="continueButton">Continue</button>
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 
     <header class="container-fluid fixed-top">
         <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
@@ -89,7 +89,6 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
-                    <!-- Adjusted alignment using ml-auto for right alignment -->
                     <li class="nav-item {% if active_page == 'home' %}active{% endif %}">
                         <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
                     </li>
@@ -150,61 +149,27 @@
 
     <script>
         $(document).ready(function () {
-            // Check if modals have been shown before in this session
             if (!sessionStorage.getItem('modalsShown')) {
-                // Show welcome modal after 3 seconds
                 setTimeout(function () {
                     $('#welcomeModal').modal('show');
-                }, 3000); // 3 seconds
+                }, 3000);
 
-                // Close welcome modal after 10 seconds
                 setTimeout(function () {
                     $('#welcomeModal').modal('hide');
-                    // Show second modal
                     $('#secondModal').modal('show');
-                }, 10000); // 10 seconds
+                }, 10000);
 
-                // Set sessionStorage to remember that modals have been shown
                 sessionStorage.setItem('modalsShown', 'true');
             }
         });
 
-        // Redirect to register page when "Continue" button is clicked
         $('#continueButton').click(function () {
-            // Redirect to register page
             window.location.href = "{% url 'account_signup' %}";
-            // Close second modal
             $('#secondModal').modal('hide');
         });
     </script>
     <script src="https://kit.fontawesome.com/049d55f482.js" crossorigin="anonymous"></script>
 
-    <!-- <script>
-        var map = L.map('map').setView([0, 0], 2); // Set initial coordinates and zoom level
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-
-        document.getElementById('locationsForm').addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent the form from submitting normally
-
-            var locationOne = document.getElementById('location_one').value;
-            var locationTwo = document.getElementById('location_two').value;
-
-            $.get(location.protocol + '//nominatim.openstreetmap.org/search?format=json&q=' + locationOne, function (data) {
-                var lat1 = data[0].lat;
-                var lon1 = data[0].lon;
-                L.marker([lat1, lon1]).addTo(map);
-            });
-
-            $.get(location.protocol + '//nominatim.openstreetmap.org/search?format=json&q=' + locationTwo, function (data) {
-                var lat2 = data[0].lat;
-                var lon2 = data[0].lon;
-                L.marker([lat2, lon2]).addTo(map);
-            });
-        });
-    </script> -->
 </body>
 
 </html>
