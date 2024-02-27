@@ -23,4 +23,5 @@ class Profile(models.Model):
     location_two_longitude = models.FloatField(max_length=100, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, blank=True, null=True)
     datetime_field = models.DateTimeField(blank=True, null=True)
+
     # picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)

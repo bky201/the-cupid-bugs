@@ -12,7 +12,7 @@
 
   #countdownTimer {
     width: 100%;
-    height: 30px;
+    height: 25px;
     font-size: xx-large;
     background-color: aquamarine;
     color: black;
@@ -162,7 +162,7 @@
 
     var scheduledDateStr = document.getElementById('countDown').innerHTML.trim(); // Remove leading/trailing whitespaces
 
-    scheduledDateStr = scheduledDateStr.replace('.', '').replace('p.m.', 'PM');
+    scheduledDateStr = scheduledDateStr.replace('.', '').replace('p.m.', 'PM').replace('a.m.', ' AM');
 
     var scheduledDate = new Date(scheduledDateStr);
 
