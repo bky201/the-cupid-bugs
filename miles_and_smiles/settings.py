@@ -15,7 +15,7 @@ GEOLOCATE_API_KEY = os.environ.get('GEOLOCATE_API_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'DEVELOPMENT' in os.environ
 # DEBUG = True
-ALLOWED_HOSTS = ['miles-and-smiles-03ded9dd0f57.herokuapp.com', '*']
+ALLOWED_HOSTS = ['miles-smiles-8a9dbd072758.herokuapp.com', '*']
 
 # CSRF_TRUSTED_ORIGINS = ['https://8000-vcgithubcod-thelovebugs-2alpoypk45k.ws-eu108.gitpod.io'] # using locally mm/ do not touch
 
