@@ -49,11 +49,11 @@ Live link: [Miles & Smiles](https://miles-smiles-8a9dbd072758.herokuapp.com/)
 
 ### User Stories
 
-###[#45](https://github.com/VCGithubCode/the-love-bugs/issues/45)
+###[#45](https://github.com/bky201/the-cupid-bugs/issues/45)
 
-###[#44](https://github.com/VCGithubCode/the-love-bugs/issues/44)
+###[#44](https://github.com/bky201/the-cupid-bugs/issues/44)
 
- ###[#34](https://github.com/VCGithubCode/the-love-bugs/issues/34)
+ ###[#34](https://github.com/bky201/the-cupid-bugs/issues/34)
 
 #### Site-goals 
 * Provide a system to allow users to see a countdown based on their planned meeting date and their geo-location.
@@ -95,11 +95,11 @@ The target audience for "Miles and Smiles" is couples who are in long-distance r
 ![3](staticfiles/images/readme_img/mockups/mockup3.png)
 
 #### EPICS(Milestones) / User Stories issues
-###[#45](https://github.com/VCGithubCode/the-love-bugs/issues/45)
+###[#45](https://github.com/bky201/the-cupid-bugs/issues/45)
 
-###[#44](https://github.com/VCGithubCode/the-love-bugs/issues/44)
+###[#44](https://github.com/bky201/the-cupid-bugs/issues/44)
 
- ###[#34](https://github.com/VCGithubCode/the-love-bugs/issues/34)
+ ###[#34](https://github.com/bky201/the-cupid-bugs/issues/34)
 
 #### GitHub Projects
 
@@ -259,14 +259,14 @@ Live link: [Miles & Smiles](https://miles-and-smiles-03ded9dd0f57.herokuapp.com/
 
 
 ### Creating a fork
-1. Navigate to the [repository](https://github.com/VCGithubCode/the-love-bugs)
+1. Navigate to the [repository](https://github.com/bky201/the-cupid-bugs)
 2. In the top-right corner of the page click on the fork button and select create a fork.
 3. You can change the name of the fork and add description 
 4. Choose to copy only the main branch or all branches to the new fork. 
 5. Click Create a Fork. A repository should appear in your GitHub
 
 ### Cloning Repository
-1. Navigate to the [repository](https://github.com/VCGithubCode/the-love-bugs)
+1. Navigate to the [repository](https://github.com/bky201/the-cupid-bugs)
 2. Click on the Code button on top of the repository and copy the link. 
 3. Open Git Bash and change the working directory to the location where you want the cloned directory. 
 4. Type git clone and then paste the link.
