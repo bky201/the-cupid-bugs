@@ -18,6 +18,14 @@ def index(request):
         return render(request, 'home/index.html', context)
     else:
         return render(request, 'home/landing.html')
+    
+def network(request):
+    profiles = Profile.objects.all()
+
+    context = {
+        'profiles': profiles,
+        }
+    return render(request, 'home/network.html', context)
 
 def contact(request):
     """ A view to return the contact page """
