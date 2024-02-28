@@ -6,7 +6,7 @@
 
 Welcome to "Miles and Smiles"! This is more than just an app - it's a bridge to unite hearts separated by distance. If you're in a long-distance relationship, you know how challenging it can be to maintain connection and intimacy. That's why we created "Miles and Smiles", a tool designed especially for couples who want to feel closer, regardless of the distance that separates them. With intuitive and user-friendly features, we're here to turn every mile traveled into shared smiles. Explore all that "Miles and Smiles" has to offer and embark on this journey of long-distance love with confidence and joy.
 
-Live link: [Miles & Smiles](https://miles-and-smiles-03ded9dd0f57.herokuapp.com/)
+Live link: [Miles & Smiles](https://miles-smiles-8a9dbd072758.herokuapp.com/)
 
 
 # Table Of Content
