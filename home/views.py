@@ -7,12 +7,12 @@ from django.contrib.auth.decorators import login_required
 
 def index(request):
     if request.user.is_authenticated:
-        profile = Profile.objects.get(user=request.user)
         profiles = Profile.objects.all()
+        profile = Profile.objects.get(user=request.user)
 
         context = {
-            'profile': profile, 
             'profiles': profiles,
+            'profile': profile, 
             }
 
         return render(request, 'home/index.html', context)

@@ -92,9 +92,7 @@
                     <li class="nav-item {% if active_page == 'home' %}active{% endif %}">
                         <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item {% if active_page == 'network' %}active{% endif %}">
-                        <a class="nav-link" href="{% url 'network' %}">Network</span></a>
-                    </li>
+
 
                     {% if user.is_authenticated %}
                     <li class="nav-item {% if active_page == 'profile' %}active{% endif %}">
@@ -105,6 +103,9 @@
                             href="{% url 'account_logout' %}">Sign Out</a>
                     </li>
                     {% else %}
+                    <li class="nav-item {% if active_page == 'network' %}active{% endif %}">
+                        <a class="nav-link" href="{% url 'network' %}">Network</span></a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link mx-2 {% if active_page == 'register' %}active{% endif %}"
                             href="{% url 'account_signup' %}">Register</a>
@@ -150,27 +151,7 @@
         <!-- Copyright -->
     </footer>
 
-    <script>
-        $(document).ready(function () {
-            if (!sessionStorage.getItem('modalsShown')) {
-                setTimeout(function () {
-                    $('#welcomeModal').modal('show');
-                }, 3000);
-
-                setTimeout(function () {
-                    $('#welcomeModal').modal('hide');
-                    $('#secondModal').modal('show');
-                }, 10000);
-
-                sessionStorage.setItem('modalsShown', 'true');
-            }
-        });
-
-        $('#continueButton').click(function () {
-            window.location.href = "{% url 'account_signup' %}";
-            $('#secondModal').modal('hide');
-        });
-    </script>
+    <script src="{% static '/js/modal.js' %}"></script>
     <script src="https://kit.fontawesome.com/049d55f482.js" crossorigin="anonymous"></script>
 
 </body>
